@@ -21,7 +21,7 @@
  * @author Developer
  * @version 1.0
  */
-
+import java.util.Stack;
 public class PalindromeCheckerApp {
 
     private static final String APP_NAME = "Palindrome Checker Management System";
@@ -38,26 +38,25 @@ public class PalindromeCheckerApp {
     public static void main(String[] args) {
 
         displayWelcomeMessage();
-        String input = "radar";
+        String input = "noon";
 
-        // Convert the string into a character array
-        char[] chars = input.toCharArray();
+        // Create a Stack to store characters
+        Stack<Character> stack = new Stack<>();
 
-        // Initialize pointers
-        int start = 0;
-        int end = chars.length - 1;
+        // Push each character of the string into the stack
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
 
         // Assume palindrome initially
         boolean isPalindrome = true;
 
-        // Compare characters from both ends
-        while (start < end) {
-            if (chars[start] != chars[end]) {
+        // Compare original string with popped characters
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
                 isPalindrome = false;
                 break;
             }
-            start++;
-            end--;
         }
 
         // Display result
