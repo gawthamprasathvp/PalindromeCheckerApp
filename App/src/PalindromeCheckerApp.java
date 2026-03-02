@@ -25,95 +25,42 @@ import java.util.Deque;
 import java.util.ArrayDeque;
 public class PalindromeCheckerApp {
 
-    // Node class for Singly Linked List
-    static class Node {
-        char data;
-        Node next;
-
-        Node(char data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
-
+    /**
+     * Application entry point for UC9.
+     *
+     * @param args Command-line arguments
+     */
     public static void main(String[] args) {
 
-        String input = "level";   // You can change input here
+        String input = "madam";   // Change input if needed
 
-        Node head = buildLinkedList(input);
-
-        boolean result = isPalindrome(head);
+        boolean result = check(input, 0, input.length() - 1);
 
         System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + result);
     }
 
-    // Convert string to singly linked list
-    private static Node buildLinkedList(String input) {
+    /**
+     * Recursively checks whether a string is palindrome.
+     *
+     * @param s     Input string
+     * @param start Starting index
+     * @param end   Ending index
+     * @return true if palindrome, otherwise false
+     */
+    private static boolean check(String s, int start, int end) {
 
-        Node head = null;
-        Node tail = null;
-
-        for (char c : input.toCharArray()) {
-            Node newNode = new Node(c);
-
-            if (head == null) {
-                head = newNode;
-                tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-        return head;
-    }
-
-    // Check palindrome using linked list
-    private static boolean isPalindrome(Node head) {
-
-        if (head == null || head.next == null) {
+        // Base Condition: If pointers cross or meet
+        if (start >= end) {
             return true;
         }
 
-        // Step 1: Find middle using fast & slow pointer
-        Node slow = head;
-        Node fast = head;
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        // If mismatch found
+        if (s.charAt(start) != s.charAt(end)) {
+            return false;
         }
 
-        // Step 2: Reverse second half
-        Node secondHalf = reverseList(slow);
-
-        Node firstHalf = head;
-
-        // Step 3: Compare both halves
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) {
-                return false;
-            }
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
-        }
-
-        return true;
-    }
-
-    // Reverse linked list
-    private static Node reverseList(Node head) {
-
-        Node prev = null;
-        Node current = head;
-
-        while (current != null) {
-            Node nextNode = current.next;
-            current.next = prev;
-            prev = current;
-            current = nextNode;
-        }
-
-        return prev;
+        // Recursive call moving inward
+        return check(s, start + 1, end - 1);
     }
 }
