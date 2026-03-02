@@ -23,89 +23,53 @@
  */
 import java.util.Deque;
 import java.util.ArrayDeque;
-public class PalindromeCheckerApp  {
+public class PalindromeCheckerApp   {
 
+    /**
+     * Application entry point for UC13.
+     * @param args Command-line arguments
+     */
     public static void main(String[] args) {
 
-        String input = "level";
+        String input = "Level";
 
         System.out.println("========================================");
-        System.out.println("        PALINDROME CHECKER APP          ");
+        System.out.println("        PALINDROME PERFORMANCE TEST     ");
         System.out.println("========================================");
-        System.out.println("Input: " + input);
 
-        // Choose strategy dynamically
-        PalindromeStrategy strategy;
+        // Start timing
+        long startTime = System.nanoTime();
 
-        // Change this to new DequeStrategy() to switch algorithm
-        strategy = new StackStrategy();
-        // strategy = new DequeStrategy();
+        boolean result = checkPalindrome(input);
 
-        boolean result = strategy.check(input);
+        // End timing
+        long endTime = System.nanoTime();
 
+        long executionTime = endTime - startTime;
+
+        System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + result);
+        System.out.println("Execution Time : " + executionTime + " ns");
+
         System.out.println("Program execution completed.");
     }
-}
 
-/*
- ==========================================================
- INTERFACE - PalindromeStrategy
- ==========================================================
-*/
+    /**
+     * Simple two-pointer palindrome check
+     */
+    private static boolean checkPalindrome(String input) {
 
-interface PalindromeStrategy {
-    boolean check(String input);
-}
+        String normalized = input.toLowerCase();
 
-/*
- ==========================================================
- CLASS - StackStrategy
- ==========================================================
-*/
+        int start = 0;
+        int end = normalized.length() - 1;
 
-class StackStrategy implements PalindromeStrategy {
-
-    public boolean check(String input) {
-
-        java.util.Stack<Character> stack = new java.util.Stack<>();
-
-        // Push characters
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare while popping
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
                 return false;
             }
-        }
-
-        return true;
-    }
-}
-
-/*
- ==========================================================
- CLASS - DequeStrategy
- ==========================================================
-*/
-
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean check(String input) {
-
-        java.util.Deque<Character> deque = new java.util.LinkedList<>();
-
-        for (char c : input.toCharArray()) {
-            deque.addLast(c);
-        }
-
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
-                return false;
-            }
+            start++;
+            end--;
         }
 
         return true;
