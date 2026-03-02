@@ -26,32 +26,56 @@ import java.util.ArrayDeque;
 public class PalindromeCheckerApp  {
 
     /**
-     * Application entry point for UC10.
+     * Application entry point for UC11.
      *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
 
-        String input = "A man a plan a canal Panama";
+        String input = "radar";
 
-        // Normalize string:
-        // Remove all non-alphanumeric characters & convert to lowercase
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        // Create service object
+        PalindromeService service = new PalindromeService();
 
-        boolean isPalindrome = true;
-
-        // Compare characters from both ends
-        for (int i = 0; i < normalized.length() / 2; i++) {
-
-            if (normalized.charAt(i) !=
-                    normalized.charAt(normalized.length() - 1 - i)) {
-                isPalindrome = false;
-                break;
-            }
-        }
+        // Call service method
+        boolean result = service.checkPalindrome(input);
 
         System.out.println("Input : " + input);
-        System.out.println("Normalized : " + normalized);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+        System.out.println("Is Palindrome? : " + result);
+    }
+}
+
+/**
+ * Service class that contains palindrome logic.
+ */
+class PalindromeService {
+
+    /**
+     * Checks whether the input string is a palindrome.
+     *
+     * @param input Input string
+     * @return true if palindrome, false otherwise
+     */
+    public boolean checkPalindrome(String input) {
+
+        if (input == null || input.length() <= 1) {
+            return true;
+        }
+
+        int start = 0;
+        int end = input.length() - 1;
+
+        // Compare characters moving inward
+        while (start < end) {
+
+            if (input.charAt(start) != input.charAt(end)) {
+                return false;
+            }
+
+            start++;
+            end--;
+        }
+
+        return true;
     }
 }
